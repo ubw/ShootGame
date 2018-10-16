@@ -4,34 +4,38 @@ import java.util.Random;
 import java.awt.image.BufferedImage;//加载图片的类
 import java.io.FileInputStream;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;;
+import java.awt.Graphics;
+import javax.imageio.ImageIO;
 
 //不能定义抽象类，碰撞和子弹动作需要用到多态，父类需要实例化
-public  class FlyingObject {
+public  abstract class FlyingObject {
 	protected int width;//宽
 	protected int height;//长
 	protected int x;//坐标x
 	protected int y;//坐标y
+	// 飞行物的三种状态
+	public static final int ALIVE = 0;
+	public static final int DEAD = 1;
+	public static final int DELETE = 2;
+	// 飞行物的当前状态
+	protected int state = ALIVE;
 	
 	public FlyingObject(){}
 	
-	public FlyingObject(int width,int heitht,int x,int y){
+	public FlyingObject(int width,int height,int x,int y){
 		this.width = width;
 		this.height = height;
 		this.x = x;
 		this.y = y;
 	}
 	
-	public FlyingObject(int width,int heitht){
+	public FlyingObject(int width,int height){
 		this.width = width;
 		this.height = height;
-		this.x = new Random().nextInt(400-this.width);
+		this.x = new Random().nextInt(World.WIDTH-this.width);
 		this.y = -this.height;
 	}
-	public  void step(){
-		System.out.println("base step");
-	}
+	public  abstract void step();
 	
 	//加载图片和对象无关？所以用static
 	public static BufferedImage loadImage(String filepath){
@@ -43,27 +47,27 @@ public  class FlyingObject {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
-		System.out.println("测试异常能否到这里");
 		return image;
 	}
 	
-	//protected abstract void step(int moveX, int moveY);//抽象类有两个方法名相同的抽象方法，是否算重载？子类是否是需要实现两个？需要
-	//static类方法  多态时候 只参考编译类型 不考虑运行类型
-	protected static void foo(){
-		System.out.println("base foo");
-	} 
+	// 图片切换函数，子类实现具体的效果
+	public abstract BufferedImage getImage();
 	
-	//非静态方法，多态，考虑运行时类型
-	protected  void fooInstance(){
-		System.out.println("base fooInstance ");
-	} 
-	
-	void test(FlyingObject a){
-		System.out.println("flyingobject");//为什么向上转型这里会用到?重载看参数
-		a.step();//重写看对象
+	// 检查状态的三个方法
+	public boolean checkAlive(){
+		return state==ALIVE;
 	}
 	
-	void test(Airplane a){
-		System.out.println("airplaneobject");
+	public boolean checkDead(){
+		return state==DEAD;
+	}
+	
+	public boolean checkDelete(){
+		return state==DELETE;
+	}
+	
+	// 画对象
+	public void paintObject(Graphics g){
+		g.drawImage(getImage(), x, y, null);
 	}
 }

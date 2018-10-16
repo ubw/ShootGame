@@ -1,5 +1,6 @@
 package cn.tedu.shoot;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -10,21 +11,37 @@ public class Sky extends FlyingObject{
 	private static BufferedImage image;
 	
 	static{
-		image = loadImage("../../res/background.png");
+		image = loadImage("C:/Users/cjwst/workspace/MyShoot/res/background.png");
 	}	
 	
 	public Sky() {
-		super(400,700,0,0);
-		//this.width = 400;//固定值
-		//this.height = 700;
-		//this.x = 0;//初值为0
-		//this.y = 0;
-		this.ySpeed = 2;
+		super(World.WIDTH, World.HEIGHT,0,0);
+		this.ySpeed = 50;
 		this.y1 = -this.height;// 为-高度
 	}
 
 	//天空 移动方法
 	public void step(){
-		System.out.println("天空 移动"+this.ySpeed);
+		if ( y >= World.HEIGHT ){
+			y = -World.HEIGHT;
+			y1 = 0;
+		}
+		if ( y1 >= World.HEIGHT ){
+			y1 = -World.HEIGHT;
+			y = 0;
+		}
+		y += ySpeed;
+		y1 += ySpeed;
+	}
+	
+	// 天空切换图片的方法
+	public BufferedImage getImage(){
+		return image;
+	}
+	
+	// 天空重写父类的画对象，天空要画两张图
+	public void paintObject(Graphics g){
+		g.drawImage(getImage(), x, y, null);
+		g.drawImage(getImage(), x, y1, null);
 	}
 }

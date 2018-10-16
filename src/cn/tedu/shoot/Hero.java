@@ -7,10 +7,11 @@ public class Hero extends FlyingObject{
 	//private long score;
 	private static BufferedImage[] image = new BufferedImage[6];
 	private int doublefile;//ÊÇ·ñË«±¶»îÁ¦
+	private int stateIndex = 0;//×´Ì¬½×¶Î
 	
 	static{
 		for(int i = 0; i<image.length;i++){
-			image[i] = loadImage("hero"+i+".png");
+			image[i] = loadImage("C:/Users/cjwst/workspace/MyShoot/res/hero"+i+".png");
 		}
 	}	
 
@@ -29,14 +30,31 @@ public class Hero extends FlyingObject{
 	public void step(int moveX, int moveY){
 		System.out.println("Ó¢ÐÛ»ú ÒÆ¶¯");
 	}
-	
-	//Ó¢ÐÛ¼ÇÇÐ»»Í¼Æ¬
-	public void change(){
-		System.out.println("Ó¢ÐÛ¼Ç »»Í¼Æ¬ ÊÓ¾õÉÏµÄ¶¯Ì¬");
-	}
 
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub		
+	}
+	
+	// Ó¢ÐÛ»úÇÐ»»Í¼Æ¬
+	@Override
+	public BufferedImage getImage(){
+		if (checkAlive()){
+			stateIndex = (stateIndex == 0)?1:0;
+			return image[stateIndex];
+		} else if (checkDead()){
+			if(stateIndex == 0 || stateIndex == 1){
+				stateIndex = 2;
+				return image[stateIndex];
+			} else {
+				if(stateIndex == image.length){
+					state = DELETE;
+				} else {
+					return image[stateIndex++];
+				}
+			}
+		}
+		
+		return null;
 	}
 }

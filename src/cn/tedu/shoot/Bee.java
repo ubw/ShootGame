@@ -11,24 +11,31 @@ public class Bee extends FlyingObject{
 
 	static{
 		for(int i = 0; i<image.length;i++){
-			image[i] = loadImage("bee"+i+".png");
+			image[i] = loadImage("C:/Users/cjwst/workspace/MyShoot/res/bee"+i+".png");
 		}
 	}
 	
 	public Bee() {
 		super(60, 50);
-		//this.width = 60;
-		//this.height = 50;
-		//this.x = (int)(Math.random()*(400-this.width));//位置不定,随机数生成的第一种方法
-		//this.x = new Random().nextInt(400-this.width);//随机数生成的第二种方法
-		//this.y = -this.height;
-		this.ySpeed = 2;
-		this.xSpeed = 1;
+		this.ySpeed = 40;
+		this.xSpeed = 20;
 		this.awardType = new Random().nextInt(2);//左闭右开
 	}
 	
 	//蜜蜂 移动方法
 	public void step(){
+		y += ySpeed;
+		x += awardType == 0 ? 1 : -1;
 		System.out.println("蜜蜂 移动"+this.xSpeed+this.ySpeed);
+	}
+	
+	// 蜜蜂切换图片
+	public BufferedImage getImage(){
+		if (checkAlive()){
+			return image[0];
+		} else if (checkDead()){
+			state = DELETE;
+		}
+		return null;
 	}
 }
