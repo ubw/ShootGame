@@ -3,11 +3,11 @@ package cn.tedu.shoot;
 import java.util.Random;
 import java.awt.image.BufferedImage;//加载图片的类
 
-public class Airplane extends FlyingObject{
+public class Airplane extends FlyingObject implements Enemy{
 	private int ySpeed;//速度
 	private static BufferedImage[] image = new BufferedImage[5];//从正常到炸毁，5张图
-	public static final int AIR_PLANE_WIDTH = 49;
-	public static final int AIR_PLANE_HEIGHTA = 36;
+	public static final int WIDTH = 49;
+	public static final int HEIGHTA = 36;
 	private int stateIndex = 1;
 	
 	//给图片赋值，静态初始块
@@ -18,13 +18,16 @@ public class Airplane extends FlyingObject{
 	}
 
 	public Airplane() {
-		super(AIR_PLANE_WIDTH, AIR_PLANE_HEIGHTA);
-		this.ySpeed = 100;
+		super(WIDTH, HEIGHTA);
+		this.ySpeed = 5;
 	}
 
 	//敌机 移动方法
 	public void step(){
 		y += ySpeed;
+		if(y>World.HEIGHT){
+			this.state = DEAD;
+		}
 	}
 	
 	// 切换图片的方法
@@ -40,4 +43,9 @@ public class Airplane extends FlyingObject{
 		}
 		return null;
 	}
+	
+	public int getScore(){
+		return 1;
+	}
+
 }

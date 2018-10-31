@@ -16,22 +16,22 @@ public class Sky extends FlyingObject{
 	
 	public Sky() {
 		super(World.WIDTH, World.HEIGHT,0,0);
-		this.ySpeed = 50;
+		this.ySpeed = 1;
 		this.y1 = -this.height;// 为-高度
 	}
 
 	//天空 移动方法
 	public void step(){
+		
 		if ( y >= World.HEIGHT ){
 			y = -World.HEIGHT;
-			y1 = 0;
 		}
 		if ( y1 >= World.HEIGHT ){
 			y1 = -World.HEIGHT;
-			y = 0;
 		}
 		y += ySpeed;
 		y1 += ySpeed;
+		
 	}
 	
 	// 天空切换图片的方法
@@ -44,4 +44,5 @@ public class Sky extends FlyingObject{
 		g.drawImage(getImage(), x, y, null);
 		g.drawImage(getImage(), x, y1, null);
 	}
+
 }

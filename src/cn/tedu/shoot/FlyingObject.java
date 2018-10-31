@@ -70,4 +70,21 @@ public  abstract class FlyingObject {
 	public void paintObject(Graphics g){
 		g.drawImage(getImage(), x, y, null);
 	}
+	
+	public boolean hit(FlyingObject enemis){
+		if (x + width < enemis.x || x > enemis.x + enemis.width) {
+			return false;
+		} else {
+			if (y > enemis.y + enemis.height || y + height < enemis.y) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	
+	public void goToDeath(){
+		this.state = DEAD;
+	}
+	
 }
